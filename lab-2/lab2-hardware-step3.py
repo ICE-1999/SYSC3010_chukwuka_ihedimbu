@@ -1,69 +1,15 @@
-import sense_hat, random, time
+import my_pi_emulator_1 as pyEmu
+import time
 
-"""
-  lab2-hardwarestep1.py
-  
-  toggling initials
-  
-"""
+#Create an object from temperature and display mod classes
+temp = pyEmu.tempMod()
+disp = pyEmu.dispMod()
 
-sense = sense_hat.SenseHat()
+#initialize disp
+disp.init()
 
-
-Y = (255, 255, 0)
-G = (0, 255, 0)
-B = (0, 0, 255)
-X = (0, 0, 0)
-
-####
-# Initials Images
-####
-
-char_I = [
-    X, X, G, G, G, G, X, X,
-    X, X, G, G, G, G, X, X,
-    X, X, X, G, G, X, X, X,
-    X, X, X, G, G, X, X, X,
-    X, X, X, G, G, X, X, X,
-    X, X, X, G, G, X, X, X,
-    X, X, G, G, G, G, X, X,
-    X, X, G, G, G, G, X, X
-]
-
-char_C = [
-    X, X, G, G, G, G, X, X,
-    X, G, G, G, G, G, G, X,
-    X, G, G, X, X, G, G, X,
-    X, G, G, X, X, X, X, X,
-    X, G, G, X, X, X, X, X,
-    X, G, G, X, X, G, G, X,
-    X, G, G, G, G, G, G, X,
-    X, X, G, G, G, G, X, X,
-  ]
-
-def initial_1():
-    return char_C
-
-def initial_2():
-    return char_I
-
-sense.clear()
-
-####
-# Main Loop
-####
-images = [initial_1, initial_2]
-sense.set_pixels(images[0]())
-count = 1
-
-while True:
-    events = sense.stick.get_events()
-    if events:
-      for event in events:
-        if event.action != 'pressed':
-            #this is a hold or keyup; move on
-            continue
-        
-        #if event.direction == 'left' | :
-        sense.set_pixels(images[count % len(images)]())
-        count += 1
+while(1):
+    t = temp.readC()
+    dispMsg = "Temp : " + str(t)
+    disp.Print(dispMsg)
+    time.sleep(1)
